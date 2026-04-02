@@ -1,0 +1,61 @@
+packages have been installed
+ 1. pip install langchain_openapi
+ 2. p install langchain-core
+ 3. pip install -U langchain-openai
+
+
+install
+pip install langchain langchain-community chromadb pypdf
+
+after text pdf extraction and final moment
+
+langchain-openai 
+sentence-transformers
+
+PREVIEW: 
+Notebook → FastAPI, nothing exotic
+PyPDFLoader
+RecursiveCharacterTextSplitter  
+HuggingFaceEmbeddings 
+Chroma (persisted to disk, same folder mounted in Docker)
+as_retriever(search_type="mmr", search_kwargs={"k": 4, "fetch_k": 20})
+RetrievalQA.from_chain_type() or create_retrieval_chain
+LLM - OpenRouter
+FastAPI + uvicorn
+Docker → Render
+
+If you reach the free limit in LangChain, you'll receive a 429 Too Many Requests error.
+At that point, 
+you can either upgrade to a PRO account for higher limits or switch to local embeddings
+ (running on your own CPU/GPU), which is always completely free. 
+
+ ---
+ for Retrievalchain
+create_retrieval_chain: Best for production RAG apps requiring full control over data flow,
+    custom prompting, and inspection of retrieved documents.
+RetrievalQA: Simple, quick prototyping if you are following old examples,
+    but largely replaced due to lack of flexibility.
+
+
+we choose create_retrieval_chain because - this is modern one and also we can use chain type in 
+separate thing not like RetrievalQA whre we use as argument and also we have control
+
+Chain type
+stuff   -- paste all chunks together, send once
+              "here is everything, answer the question"
+
+map_reduce  -- send each chunk separately, get 10 mini answers
+              then send those 10 answers together, get final answer
+              2 rounds of LLM calls
+
+refine      -- send chunk 1, get answer
+              send chunk 2 + previous answer, refine
+              send chunk 3 + refined answer, refine again
+              N rounds of LLM calls
+
+map_rerank -- send each chunk separately, get answer + confidence score
+              pick the highest confidence answer
+
+and for the chain type we choose - stuff - we have small data also it;s best compared to the Rest 
+
+author - Abubakker Siddiq
